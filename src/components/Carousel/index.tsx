@@ -780,7 +780,6 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
                             <ul
                                 className={klass.SLIDER(true, this.state.swiping)}
                                 ref={(node: HTMLUListElement) => this.setListRef(node)}
-                                style={this.state.itemListStyle || {}}
                             >
                                 {this.props.infiniteLoop && lastClone}
                                 {this.renderItems()}
