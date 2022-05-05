@@ -28,6 +28,7 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
     static defaultProps: CarouselProps = {
         ariaLabel: undefined,
         axis: 'horizontal',
+        thumbsAxis: 'horizontal',
         centerSlidePercentage: 80,
         interval: 3000,
         labels: {
@@ -697,6 +698,7 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
                 thumbWidth={this.props.thumbWidth}
                 labels={this.props.labels}
                 emulateTouch={this.props.emulateTouch}
+                thumbsAxis={this.props.thumbsAxis}
             >
                 {this.props.renderThumbs(this.props.children)}
             </Thumbs>
@@ -780,6 +782,7 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
                             <ul
                                 className={klass.SLIDER(true, this.state.swiping)}
                                 ref={(node: HTMLUListElement) => this.setListRef(node)}
+                                style={this.state.itemListStyle || {}}
                             >
                                 {this.props.infiniteLoop && lastClone}
                                 {this.renderItems()}
