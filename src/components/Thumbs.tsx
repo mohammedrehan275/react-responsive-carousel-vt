@@ -1,6 +1,6 @@
 import React, { Component, Children } from 'react';
 import klass from '../cssClasses';
-import { outerWidth } from '../dimensions';
+import { outerWidth, outerHeight } from '../dimensions';
 import CSSTranslate from '../CSSTranslate';
 // @ts-ignore
 import Swipe from 'react-easy-swipe';
@@ -10,7 +10,7 @@ const isKeyboardEvent = (e: React.MouseEvent | React.KeyboardEvent): e is React.
     e.hasOwnProperty('key');
 
 export interface Props {
-    axis: 'horizontal' | 'vertical';
+    thumbsAxis: 'horizontal' | 'vertical';
     children: React.ReactChild[];
     labels: {
         leftArrow: string;
@@ -20,6 +20,7 @@ export interface Props {
     onSelectItem: (index: number, item: React.ReactNode) => void;
     selectedItem: number;
     thumbWidth: number;
+    thumbHeight: number;
     transitionTime: number;
     emulateTouch?: boolean;
 }
@@ -42,7 +43,7 @@ export default class Thumbs extends Component<Props, State> {
     static displayName = 'Thumbs';
 
     static defaultProps = {
-        axis: 'horizontal',
+        thumbsAxis: 'horizontal',
         labels: {
             leftArrow: 'previous slide / item',
             rightArrow: 'next slide / item',
@@ -50,6 +51,7 @@ export default class Thumbs extends Component<Props, State> {
         },
         selectedItem: 0,
         thumbWidth: 80,
+        thumbHeight: 50,
         transitionTime: 350,
     };
 
@@ -131,7 +133,14 @@ export default class Thumbs extends Component<Props, State> {
 
         const total = Children.count(this.props.children);
         const wrapperSize = this.itemsWrapperRef.clientWidth;
-        const itemSize = this.props.thumbWidth ? this.props.thumbWidth : outerWidth(this.thumbsRef[0]);
+        const itemSize =
+            this.props.thumbsAxis === 'horizontal'
+                ? this.props.thumbWidth
+                    ? this.props.thumbWidth
+                    : outerWidth(this.thumbsRef[0])
+                : this.props.thumbHeight
+                ? this.props.thumbHeight
+                : outerHeight(this.thumbsRef[0]);
         const visibleItems = Math.floor(wrapperSize / itemSize);
         const showArrows = visibleItems < total;
         const lastPosition = showArrows ? total - visibleItems : 0;
@@ -194,7 +203,7 @@ export default class Thumbs extends Component<Props, State> {
         if (this.itemsListRef) {
             ['WebkitTransform', 'MozTransform', 'MsTransform', 'OTransform', 'transform', 'msTransform'].forEach(
                 (prop) => {
-                    this.itemsListRef!.style[prop as any] = CSSTranslate(position, '%', this.props.axis);
+                    this.itemsListRef!.style[prop as any] = CSSTranslate(position, '%', this.props.thumbsAxis);
                 }
             );
         }
@@ -277,9 +286,13 @@ export default class Thumbs extends Component<Props, State> {
 
         const currentPosition = -this.state.firstItem * (this.state.itemSize || 0);
 
-        const transformProp = CSSTranslate(currentPosition, 'px', this.props.axis);
+        const transformProp = CSSTranslate(currentPosition, 'px', this.props.thumbsAxis);
 
         const transitionTime = this.props.transitionTime + 'ms';
+
+        const display = this.props.thumbsAxis === 'horizontal' ? 'block' : 'flex';
+
+        const flexDirection = this.props.thumbsAxis === 'horizontal' ? 'row' : 'column';
 
         itemListStyles = {
             WebkitTransform: transformProp,
@@ -294,6 +307,8 @@ export default class Thumbs extends Component<Props, State> {
             OTransitionDuration: transitionTime,
             transitionDuration: transitionTime,
             msTransitionDuration: transitionTime,
+            display: display,
+            flexDirection: flexDirection,
         };
 
         return (
