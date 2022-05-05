@@ -1,7 +1,7 @@
 {
-    "name": "react-responsive-carousel",
+    "name": "@mohammedsrehan/react-responsive-carousel",
     "version": "3.2.22",
-    "description": "React Responsive Carousel",
+    "description": "React Responsive Carousel modified to display vertical thumbs.",
     "author": {
         "name": "Leandro Augusto Lemos",
         "url": "http://leandrowd.github.io/"
