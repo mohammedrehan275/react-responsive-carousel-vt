@@ -57,6 +57,12 @@ export const vertical = () => (
     </Carousel>
 );
 
+export const verticalThumbs = () => (
+    <Carousel thumbsAxis="vertical" {...getConfigurableProps()}>
+        {baseChildren.props.children}
+    </Carousel>
+);
+
 export const centerMode = () => (
     <Carousel
         infiniteLoop
