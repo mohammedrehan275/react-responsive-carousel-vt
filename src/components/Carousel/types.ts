@@ -22,6 +22,7 @@ export type StopSwipingHandler = (props: CarouselProps, state: CarouselState) =>
 export interface CarouselProps {
     ariaLabel?: string | undefined;
     axis: 'horizontal' | 'vertical';
+    thumbsAxis: 'horizontal' | 'vertical';
     autoFocus?: boolean;
     autoPlay?: boolean;
     centerMode?: boolean;
